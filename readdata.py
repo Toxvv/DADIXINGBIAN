@@ -7,5 +7,15 @@ def openreadtxt(file_name):
             # 将前面的数字转换为浮点数，并将字符串作为最后一个元素
             data.append([float(x) for x in parts[:-1]] + [parts[-1]])
     return data
+
+
 #data = openreadtxt('D:\大地形变测量学\第二次作业说明\青藏高原GPS数据\gps_data.txt.txt')
 #print(data[1])
+
+# 保存多个矩阵到文本文件的函数
+def save_matrices_to_text(matrices, filename):
+    with open(filename, 'w') as file:
+        for matrix in matrices:
+            for row in matrix:
+                file.write('\t'.join(map(str, row)) + '\n')
+            file.write('\n')
