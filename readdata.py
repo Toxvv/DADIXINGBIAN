@@ -9,8 +9,8 @@ def openreadtxt(file_name):
     return data
 
 
-#data = openreadtxt('D:\大地形变测量学\第二次作业说明\青藏高原GPS数据\gps_data.txt.txt')
-#print(data[1])
+# data = openreadtxt('D:\大地形变测量学\第二次作业说明\青藏高原GPS数据\gps_data.txt.txt')
+# print(data[1])
 
 # 保存多个矩阵到文本文件的函数
 def save_matrices_to_text(matrices, filename):

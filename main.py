@@ -4,7 +4,6 @@ import math
 import getrad
 import Model
 
-
 data = rd.openreadtxt('D:\\大地形变测量学\\第二次作业说明\\青藏高原GPS数据\\gps_data.txt.txt')
 
 #  地球半径值（m）
@@ -36,10 +35,11 @@ delta_B = np.array(lat) - avg_B
 # ModeL
 L = np.empty((2 * len(data), 1))
 B = []
-for i in range(5):
+for i in range(4):
     B.append(np.empty((2 * len(data), 6)))
     result.append(np.empty((2 * len(data), 6)))
-
+B.append(np.empty((2 * len(data), 3)))
+result.append(np.empty((2 * len(data), 3)))
 X0 = np.empty((6, 1))
 D = np.empty((2 * len(data), 2 * len(data)))
 for i in range(len(data)):
@@ -52,10 +52,21 @@ for i in range(len(data)):
     B[1][i * 2] = [1, 0, r0 * math.cos(avg_B) * delta_L[i], 0, 0.5 * r0 * delta_B[i], r0 * delta_B[i]]
     B[1][i * 2 + 1] = [0, 1, 0, r0 * delta_B[i], 0.5 * r0 * math.cos(avg_B) * delta_L[i],
                        -r0 * math.cos(avg_B) * delta_L[i]]
+    B[2][i * 2] = [-r0, -r0 * math.sin(avg_B) * delta_L[i], -r0 * delta_B[i], r0 * math.cos(avg_B) * delta_L[i],
+                   0, 0.5 * r0 * delta_B[i]]
+    B[2][i * 2 + 1] = [r0 * math.sin(avg_B) * delta_L[i], -r0, r0 * math.cos(avg_B) * delta_L[i], 0,
+                       r0 * delta_B[i], 0.5 * r0 * math.cos(avg_B) * delta_L[i]]
+    B[3][i * 2] = [-r0 * math.cos(lon[i]) * math.sin(lat[i]), -r0 * math.sin(lon[i]) * math.sin(lat[i]),
+                   r0 * math.cos(lat[i]), r0 * math.cos(avg_B) * delta_L[i], 0, 0.5 * r0 * delta_B[i]]
+    B[3][i * 2 + 1] = [r0 * math.sin(lon[i]), -r0 * math.cos(lon[i]), 0, 0, r0 * delta_B[i],
+                       0.5 * r0 * math.cos(avg_B) * delta_L[i]]
+    B[4][i * 2] = [-r0 * math.cos(lon[i]) * math.sin(lat[i]), -r0 * math.sin(lon[i]) * math.sin(lat[i]),
+                   r0 * math.cos(lat[i])]
+    B[4][i * 2 + 1] = [r0 * math.sin(lon[i]), -r0 * math.cos(lon[i]), 0]
     D[2 * i, 2 * i] = 1 / (xigmae[i] * xigmae[i])
     D[2 * i + 1, 2 * i + 1] = 1 / (xigman[i] * xigman[i])
 
-for i in range(2):
+for i in range(5):
     result[i] = Model.Model1(L, B[i], D)
 
 # Save the result to a text file
