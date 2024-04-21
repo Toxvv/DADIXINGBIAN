@@ -17,6 +17,7 @@ xigmae = []
 xigman = []
 name = []
 result = []
+Dresult = []
 for i in range(len(data)):
     lon.append(getrad.getrad(float(data[i][0])))
     lat.append(getrad.getrad(float(data[i][1])))
@@ -38,8 +39,10 @@ B = []
 for i in range(4):
     B.append(np.empty((2 * len(data), 6)))
     result.append(np.empty((2 * len(data), 6)))
+    Dresult.append(np.empty((2 * len(data), 6)))
 B.append(np.empty((2 * len(data), 3)))
 result.append(np.empty((2 * len(data), 3)))
+Dresult.append(np.empty((2 * len(data), 3)))
 X0 = np.empty((6, 1))
 D = np.empty((2 * len(data), 2 * len(data)))
 for i in range(len(data)):
@@ -68,6 +71,8 @@ for i in range(len(data)):
 
 for i in range(5):
     result[i] = Model.Model1(L, B[i], D)
+    Dresult[i] = Model.Model2(L, B[i], D)
 
 # Save the result to a text file
 rd.save_matrices_to_text(result, 'result_matrices.txt')
+rd.save_matrices_to_text(Dresult, 'result_Dmatrices.txt')
